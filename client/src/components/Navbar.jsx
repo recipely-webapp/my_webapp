@@ -4,16 +4,18 @@ import { Link } from 'react-router-dom';
 import '../App.css';
 import logo from '../assets/logo.png';
 import userIcon from '../assets/profile.jpg'; 
+import { FaBars, FaTimes } from 'react-icons/fa';
 
 function Navbar({ user, onLogout }) {
   // 2. Rimuovi la riga 'const navigate = useNavigate();'
-
+ const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
   const handleLogout = () => {
     onLogout();
     setIsDropdownOpen(false);
+     setIsMobileMenuOpen(false);
   };
   
   // 3. Rimuovi la funzione 'handleNavigate', non è più necessaria.
@@ -30,6 +32,11 @@ function Navbar({ user, onLogout }) {
     };
   }, [dropdownRef]);
 
+   const closeAllMenus = () => {
+    setIsDropdownOpen(false);
+    setIsMobileMenuOpen(false);
+  }
+
   return (
     <nav className="navbar">
       {/* 4. Usa Link per il logo */}
@@ -38,9 +45,9 @@ function Navbar({ user, onLogout }) {
       </Link>
       <h1 className="title">RECIPELY</h1>
 
-      <div className="nav-buttons">
-        {/* 5. Usa Link per il bottone Home */}
-        <Link to="/" className="nav-link-button">Home</Link>
+      {/* 3. Aggiungi il contenitore per i bottoni con una classe condizionale */}
+      <div className={isMobileMenuOpen ? "nav-buttons mobile-active" : "nav-buttons"}>
+        <Link to="/" className="nav-link-button" onClick={closeAllMenus}>Home</Link>
         
         {user ? (
           <div className="user-menu-container" ref={dropdownRef}>
@@ -51,14 +58,13 @@ function Navbar({ user, onLogout }) {
             
             {isDropdownOpen && (
               <div className="dropdown-menu">
-                {/* 6. Usa Link per le opzioni del menu, aggiungendo un onClick per chiudere la tendina */}
-                <Link to="/profile" className="dropdown-link" onClick={() => setIsDropdownOpen(false)}>
+                <Link to="/profile" className="dropdown-link" onClick={closeAllMenus}>
                   Mio Profilo
                 </Link>
-                <Link to="/favorites" className="dropdown-link" onClick={() => setIsDropdownOpen(false)}>
+                <Link to="/favorites" className="dropdown-link" onClick={closeAllMenus}>
                   Preferiti
                 </Link>
-                <Link to="/insertrecipe" className="dropdown-link" onClick={() => setIsDropdownOpen(false)}>
+                <Link to="/insertrecipe" className="dropdown-link" onClick={closeAllMenus}>
                   Inserisci ricetta
                 </Link>
                 <div className="dropdown-divider"></div>
@@ -68,15 +74,17 @@ function Navbar({ user, onLogout }) {
               </div>
             )}
           </div>
-          
-           
         ) : (
           <>
-            {/* 7. Usa Link per i bottoni Login e Register */}
-            <Link to="/login" className="nav-link-button">Login</Link>
-            <Link to="/register" className="nav-link-button">Register</Link>
+            <Link to="/login" className="nav-link-button" onClick={closeAllMenus}>Login</Link>
+            <Link to="/register" className="nav-link-button" onClick={closeAllMenus}>Register</Link>
           </>
         )}
+      </div>
+
+      {/* 4. Aggiungi l'icona hamburger che appare solo su mobile */}
+      <div className="mobile-menu-icon" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+        {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
       </div>
     </nav>
   );
