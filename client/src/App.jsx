@@ -10,7 +10,7 @@ import RecipeDetailPage from './pages/RecipeDetailPage';
 import FavoritesPage from './pages/FavoritesPage';
 import ProfilePage from './pages/ProfilePage';
 import InsertRecipePage from './pages/InsertRecipePage';
-import PrivateRoute from './components/PrivateRoute';
+import EditRecipePage from './pages/EditRecipePage';
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -43,6 +43,7 @@ function App() {
         <Route path="/" element={<HomePage user={currentUser} />} />
         <Route path="/login" element={<LoginPage setCurrentUser={setCurrentUser} />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/edit-recipe/:recipeId" element={<EditRecipePage />} />
       </Routes>
       <Footer />
     </Router>

@@ -66,4 +66,5 @@ export default {
    getRecipeById: (id) => API.get(`/recipes/${id}`), 
     getUserRecipes: () => API.get('/recipes/by-user/mine'),
   deleteRecipe: (id) => API.delete(`/recipes/${id}`),
+   updateRecipe: (id, recipeData) => API.put(`/recipes/${id}`, recipeData),
 };

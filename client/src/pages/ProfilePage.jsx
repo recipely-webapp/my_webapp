@@ -64,10 +64,6 @@ function ProfilePage({ user }) {
       }
     }
   };
-  const handleEditRecipe = (recipeId) => {
-    // La funzione ora mostra solo un avviso, senza usare 'navigate'
-    alert('La funzione di modifica non è ancora stata implementata.');
-  };
 
   // 5. Gestione del caricamento e fallback se l'utente non è ancora disponibile
   if (!user) {
@@ -107,9 +103,10 @@ function ProfilePage({ user }) {
                   <p className="favorite-recipe-description">{recipe.descrizione}</p>
                 </Link>
                 <div className="managed-recipe-actions">
-                  <button onClick={() => handleEditRecipe(recipe._id)} className="action-button edit-button">
+                  {/* Trasformiamo il bottone in un componente Link */}
+                  <Link to={`/edit-recipe/${recipe._id}`} className="action-button edit-button">
                     <FaEdit /> Modifica
-                  </button>
+                  </Link>
                   <button onClick={() => handleDeleteRecipe(recipe._id)} className="action-button delete-button">
                     <FaTrash /> Elimina
                   </button>
