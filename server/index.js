@@ -12,8 +12,26 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // --- ORDINE CORRETTO DEI MIDDLEWARE ---
-app.set('trust proxy', 1); 
-app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+
+const allowedOrigins = [
+  'http://localhost:3000', // Il tuo frontend in locale
+  'https://my-webapp-beryl.vercel.app' // Il tuo frontend deployato su Vercel
+];
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    // Permetti richieste senza 'origin' (come Postman o app mobile) o se l'origine è nella lista
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+
 app.use(cookieParser()); // <-- POSIZIONE CORRETTA!
 app.use(express.json());
 
