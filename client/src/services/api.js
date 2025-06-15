@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const API = axios.create({
   //baseURL: 'http://localhost:5000/api',
-  baseURL:https:'https://recipely-webapp.onrender.com',
+  baseURL:'https://recipely-webapp.onrender.com',
   withCredentials: true,
 });
 
