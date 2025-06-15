@@ -3,36 +3,71 @@ import { Link } from 'react-router-dom';
 import api from '../services/api'; // 1. Importa l'API
 import '../App.css';
 
+// Aggiungiamo due icone per i bottoni
+import { FaTrash, FaEdit } from 'react-icons/fa';
+
+
 // 2. La pagina riceve l'utente loggato come prop
 function ProfilePage({ user }) {
   // 3. Stati per gestire i preferiti, il caricamento e gli errori
   const [favoriteRecipes, setFavoriteRecipes] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [favLoading, setFavLoading] = useState(true);
+  const [myRecipes, setMyRecipes] = useState([]);
+  const [myRecipesLoading, setMyRecipesLoading] = useState(true);
   const [error, setError] = useState('');
 
   // 4. Effetto per caricare i dati quando il componente viene montato o l'utente cambia
   useEffect(() => {
-    const fetchFavorites = async () => {
-      if (!user) {
-        // Se non c'è un utente, non c'è bisogno di fare una chiamata API
-        setLoading(false);
-        return;
-      }
+    if (!user) {
+      setFavLoading(false);
+      setMyRecipesLoading(false);
+      return;
+    }
 
+    const fetchFavorites = async () => {
       try {
-        const res = await api.getFavorites(); // Chiama l'API per ottenere i preferiti
-        setFavoriteRecipes(res.data.favorites); // Salva i dati nello stato
-        setError('');
+        const res = await api.getFavorites();
+        setFavoriteRecipes(res.data.favorites);
       } catch (err) {
-        console.error('Errore nel caricamento dei preferiti del profilo:', err);
-        setError('Impossibile caricare le ricette preferite.');
+        console.error('Errore caricamento preferiti:', err);
+        setError('Impossibile caricare i preferiti.');
       } finally {
-        setLoading(false); // Fine del caricamento
+        setFavLoading(false);
+      }
+    };
+
+    const fetchMyRecipes = async () => {
+      try {
+        const res = await api.getUserRecipes();
+        setMyRecipes(res.data);
+      } catch (err) {
+        console.error('Errore caricamento ricette utente:', err);
+        setError(prev => prev + ' Impossibile caricare le tue ricette.');
+      } finally {
+        setMyRecipesLoading(false);
       }
     };
 
     fetchFavorites();
-  }, [user]); // Dipendenza: l'effetto si attiva se l'oggetto 'user' cambia
+    fetchMyRecipes();
+  }, [user]);// Dipendenza: l'effetto si attiva se l'oggetto 'user' cambia
+
+ const handleDeleteRecipe = async (recipeId) => {
+    if (window.confirm('Sei sicuro di voler eliminare questa ricetta? L\'azione è irreversibile.')) {
+      try {
+        await api.deleteRecipe(recipeId);
+        setMyRecipes(currentRecipes => currentRecipes.filter(r => r._id !== recipeId));
+        alert('Ricetta eliminata con successo!');
+      } catch (err) {
+        console.error('Errore eliminazione ricetta:', err);
+        alert('Si è verificato un errore durante l\'eliminazione.');
+      }
+    }
+  };
+  const handleEditRecipe = (recipeId) => {
+    // La funzione ora mostra solo un avviso, senza usare 'navigate'
+    alert('La funzione di modifica non è ancora stata implementata.');
+  };
 
   // 5. Gestione del caricamento e fallback se l'utente non è ancora disponibile
   if (!user) {
@@ -58,18 +93,43 @@ function ProfilePage({ user }) {
         <h1 className="profile-name">{user.username}</h1>
         <p className="profile-email-display">{user.email}</p>
       </div>
-
-      {/* CARD 2: RICETTE PREFERITE (usa i dati reali) */}
+  {/* CARD 2: RICETTE CREATE */}
+      <div className="profile-card">
+        <h2 className="profile-card-title">Le Tue Ricette Create</h2>
+        {myRecipesLoading ? (
+          <p>Caricamento delle tue ricette...</p>
+        ) : myRecipes.length > 0 ? (
+          <div className="favorite-recipes-list">
+            {myRecipes.map(recipe => (
+              <div key={recipe._id} className="favorite-recipe-item managed-recipe">
+                <Link to={`/recipe/${recipe._id}`} className="managed-recipe-info">
+                  <h3 className="favorite-recipe-title">{recipe.titolo}</h3>
+                  <p className="favorite-recipe-description">{recipe.descrizione}</p>
+                </Link>
+                <div className="managed-recipe-actions">
+                  <button onClick={() => handleEditRecipe(recipe._id)} className="action-button edit-button">
+                    <FaEdit /> Modifica
+                  </button>
+                  <button onClick={() => handleDeleteRecipe(recipe._id)} className="action-button delete-button">
+                    <FaTrash /> Elimina
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p>Non hai ancora creato nessuna ricetta. <Link to="/insertrecipe">Creane una ora!</Link></p>
+        )}
+      </div>
+          {/* CARD 3: RICETTE PREFERITE */}
       <div className="profile-card">
         <h2 className="profile-card-title">Le Tue Ricette Preferite</h2>
-        
-        {loading ? (
+        {favLoading ? (
           <p>Caricamento dei preferiti...</p>
         ) : error ? (
           <p style={{ color: 'red' }}>{error}</p>
         ) : favoriteRecipes.length > 0 ? (
           <div className="favorite-recipes-list">
-            {/* 7. Mappa sui dati reali e crea i link corretti */}
             {favoriteRecipes.map(recipe => (
               <Link to={`/recipe/${recipe._id}`} key={recipe._id} className="favorite-recipe-item">
                 <h3 className="favorite-recipe-title">{recipe.titolo}</h3>
@@ -81,7 +141,6 @@ function ProfilePage({ user }) {
           <p>Non hai ancora aggiunto nessuna ricetta ai preferiti!</p>
         )}
       </div>
-
     </div>
   );
 }

@@ -64,4 +64,6 @@ export default {
   getFavorites: () => API.get('/users/favorites'),
    createRecipe: (recipeData) => API.post('/recipes', recipeData),
    getRecipeById: (id) => API.get(`/recipes/${id}`), 
+    getUserRecipes: () => API.get('/recipes/by-user/mine'),
+  deleteRecipe: (id) => API.delete(`/recipes/${id}`),
 };

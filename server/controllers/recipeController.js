@@ -49,6 +49,17 @@ exports.getRecipeById = async (req, res) => {
   }
 };
 
+exports.getUserRecipes = async (req, res) => {
+  try {
+    // Troviamo tutte le ricette dove il campo 'autore' corrisponde all'ID dell'utente loggato
+    const userRecipes = await Recipe.find({ autore: req.user.userId });
+    res.json(userRecipes);
+  } catch (err) {
+    console.error("Errore nel recupero delle ricette dell'utente:", err);
+    res.status(500).json({ error: 'Errore nel recupero delle ricette create dall\'utente' });
+  }
+};
+
 // POST - crea ricetta
 exports.createRecipe = async (req, res) => {
   try {
@@ -73,23 +84,23 @@ exports.createRecipe = async (req, res) => {
     res.status(400).json({ error: 'Errore nella creazione della ricetta' });
   }
 };
-
-// PUT - aggiorna ricetta
 exports.updateRecipe = async (req, res) => {
   try {
-    const updatedRecipe = await Recipe.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!updatedRecipe) return res.status(404).json({ error: 'Ricetta non trovata' });
+    // Non serve più controllare il proprietario, lo fa già il middleware!
+    const updatedRecipe = await Recipe.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    if (!updatedRecipe) return res.status(404).json({ error: 'Ricetta non trovata' }); // Questo controllo può rimanere per sicurezza
     res.json(updatedRecipe);
   } catch (err) {
     res.status(400).json({ error: 'Errore nell\'aggiornamento della ricetta' });
   }
 };
 
-// DELETE - elimina ricetta
+// DELETE - elimina ricetta (ORA È PIÙ SEMPLICE)
 exports.deleteRecipe = async (req, res) => {
   try {
+    // Non serve più controllare il proprietario, lo fa già il middleware!
     const deleted = await Recipe.findByIdAndDelete(req.params.id);
-    if (!deleted) return res.status(404).json({ error: 'Ricetta non trovata' });
+    if (!deleted) return res.status(404).json({ error: 'Ricetta non trovata' }); // Anche questo
     res.json({ message: 'Ricetta eliminata con successo' });
   } catch (err) {
     res.status(500).json({ error: 'Errore nell\'eliminazione della ricetta' });

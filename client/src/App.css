@@ -882,3 +882,50 @@ form button[type="submit"]:hover {
     display: none;
   }
 }
+
+.managed-recipe {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+
+.managed-recipe-info {
+  flex-grow: 1; /* Fa in modo che il link occupi tutto lo spazio disponibile */
+  text-decoration: none;
+  color: inherit;
+}
+
+.managed-recipe-actions {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0; /* Impedisce ai bottoni di rimpicciolirsi */
+}
+
+.action-button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.edit-button {
+  background-color: #ffc107; /* Giallo */
+  color: #212529;
+}
+.edit-button:hover {
+  background-color: #e0a800;
+}
+
+.delete-button {
+  background-color: #dc3545; /* Rosso */
+  color: white;
+}
+.delete-button:hover {
+  background-color: #c82333;
+}
