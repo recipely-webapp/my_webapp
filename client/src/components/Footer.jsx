@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom'; // Importa il componente Link per la navigazione
-import '../App.css';
+import '../styles/components-styles/Footer.css';
 
 const Footer = () => {
   return (

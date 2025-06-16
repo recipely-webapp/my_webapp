@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
-import '../App.css';
+import '../styles/components-styles/Card.css';
 
 function Card({ title, image, description, isFavorite, onToggleFavorite }) {
   return (

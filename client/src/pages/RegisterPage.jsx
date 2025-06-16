@@ -1,41 +1,39 @@
+// src/pages/RegisterPage.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
-import Button from '@mui/material/Button';
+import AuthForm from '../components/AuthForm'; // Importa il componente riutilizzabile
 
 function RegisterPage() {
-  const [formData, setFormData] = useState({ username: '', email: '', password: '' });
   const navigate = useNavigate();
+  const [error, setError] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleRegister = async (formData) => {
+    setError('');
+    setSubmitting(true);
     try {
+      // L'API di registrazione si aspetta username, email e password
       await api.register(formData);
+      alert('Registrazione completata! Ora puoi effettuare il login.');
       navigate('/login');
     } catch (err) {
+      const errorMessage = err.response?.data?.message || 'Errore durante la registrazione. Riprova.';
+      setError(errorMessage);
       console.error('Errore registrazione:', err.response?.data || err.message);
+    } finally {
+      setSubmitting(false);
     }
   };
 
   return (
     <div className='form-container'>
-    <form onSubmit={handleSubmit}>
-      <h2>Registrazione</h2>
-      <input type="text" placeholder="Username" value={formData.username}
-             onChange={(e) => setFormData({ ...formData, username: e.target.value })} />
-      <input type="email" placeholder="Email" value={formData.email}
-             onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
-      <input type="password" placeholder="Password" value={formData.password}
-             onChange={(e) => setFormData({ ...formData, password: e.target.value })} />
-      <Button 
-          type="submit" 
-          variant="contained"  // 'variant' definisce lo stile. 'contained' è un bottone solido con sfondo.
-          fullWidth          // Occupa tutta la larghezza del contenitore (come il tuo CSS faceva prima)
-          sx={{ mt: 2, p: 1.5 }} // 'sx' è per stili rapidi. Qui aggiungiamo margine sopra (mt) e padding (p).
-        >
-          Registrati
-        </Button>
-    </form>
+      <AuthForm
+        formType="register"
+        onSubmit={handleRegister}
+        error={error}
+        submitting={submitting}
+      />
     </div>
   );
 }

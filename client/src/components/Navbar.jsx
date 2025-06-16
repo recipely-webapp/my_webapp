@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 // 1. Rimuovi useNavigate e importa Link
 import { Link } from 'react-router-dom';
-import '../App.css';
+import '../styles/components-styles/Navbar.css';
 import logo from '../assets/logo.png';
 import userIcon from '../assets/profile.jpg'; 
 import { FaBars, FaTimes } from 'react-icons/fa';

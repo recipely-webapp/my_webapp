@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom'; // 1. Importa useParams
 import api from '../services/api';
-import '../App.css'; // Importa il CSS
+import '../styles/pages-styles/RecipeDetailPage.css'; // Importa il CSS
 
 function RecipeDetailPage() {
   const [recipe, setRecipe] = useState(null);

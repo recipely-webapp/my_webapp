@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'; // Importa Link per la navigazione
 import api from '../services/api'; 
-import '../App.css';
+import '../styles/components-styles/Recipe-Search.css';
 
 function RecipeSearch() {
   const [searchTerm, setSearchTerm] = useState('');

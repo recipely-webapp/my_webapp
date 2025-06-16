@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Card from '../components/Card';
 import api from '../services/api';
-import '../App.css';
 import { Link } from 'react-router-dom';
 import RecipeSearch from '../components/RecipeSearch';
 

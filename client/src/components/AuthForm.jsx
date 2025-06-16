@@ -1,56 +1,72 @@
 // src/components/AuthForm.jsx
 import React, { useState } from 'react';
+import Button from '@mui/material/Button';
 
-function AuthForm({ onSubmitForm, formType }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [username, setUsername] = useState(''); // solo per registrazione
+function AuthForm({ formType, onSubmit, error, submitting }) {
+  const [formData, setFormData] = useState({
+    username: '',
+    email: '',
+    password: '',
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const credentials = formType === 'register'
-      ? { email, password, username }
-      : { email, password };
-    onSubmitForm(credentials);
+    onSubmit(formData); // Passa tutti i dati del form al genitore
   };
 
   return (
-    <form onSubmit={handleSubmit} className="auth-form">
+    <form onSubmit={handleSubmit}>
       <h2>{formType === 'login' ? 'Login' : 'Registrazione'}</h2>
 
+      {/* Mostra il messaggio di errore se presente */}
+      {error && <div className="error-message">{error}</div>}
+
       {formType === 'register' && (
-        <div>
-          <label>Username</label>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </div>
+        <input
+          type="text"
+          name="username"
+          placeholder="Username"
+          value={formData.username}
+          onChange={handleChange}
+          required
+        />
       )}
 
-      <div>
-        <label>Email</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-      </div>
+      <input
+        type="email"
+        name="email"
+        placeholder="Email"
+        value={formData.email}
+        onChange={handleChange}
+        required
+      />
 
-      <div>
-        <label>Password</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-      </div>
+      <input
+        type="password"
+        name="password"
+        placeholder="Password"
+        value={formData.password}
+        onChange={handleChange}
+        required
+        minLength="6"
+      />
 
-      <button type="submit">{formType === 'login' ? 'Accedi' : 'Registrati'}</button>
+      <Button 
+        type="submit" 
+        variant="contained"
+        fullWidth
+        disabled={submitting}
+        sx={{ mt: 2, p: 1.5 }}
+      >
+        {submitting 
+          ? 'Caricamento...' 
+          : (formType === 'login' ? 'Accedi' : 'Registrati')}
+      </Button>
     </form>
   );
 }

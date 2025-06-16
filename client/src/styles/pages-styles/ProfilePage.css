@@ -1,0 +1,151 @@
+.profile-wrapper {
+  max-width: 800px;
+  margin: 40px auto; /* Centra il contenuto e dà spazio sopra/sotto */
+  padding: 0 20px; /* Spazio ai lati su schermi piccoli */
+}
+
+/* Stile base per tutte le "card" nella pagina */
+.profile-card {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px; /* Angoli leggermente arrotondati */
+  padding: 30px;
+  margin-bottom: 30px; /* Spazio tra una card e l'altra */
+}
+
+/* Card di intestazione con nome e avatar */
+.profile-header-card {
+  text-align: center;
+  border-top: 5px solid #da8e00; /* Bordo colorato in cima */
+}
+
+/* Avatar circolare */
+.profile-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #2c3e50; /* Colore scuro per contrasto */
+  color: white;
+  font-size: 3.5rem;
+  font-weight: bold;
+  /* Semplici comandi per centrare l'iniziale */
+  display: inline-block;
+  line-height: 100px;
+  margin-bottom: 20px;
+}
+
+.profile-name {
+  font-size: 2rem;
+  color: #333;
+  margin: 0;
+}
+
+.profile-email-display {
+  font-size: 1.1rem;
+  color: #777;
+  margin-top: 5px;
+}
+
+/* Titolo delle card di contenuto */
+.profile-card-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #333;
+  margin-top: 0;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+
+/* Singolo elemento della lista dei preferiti */
+.favorite-recipe-item {
+  display: block; /* Lo rende un blocco cliccabile intero */
+  background-color: #f8f9fa; /* Sfondo leggermente grigio */
+  padding: 20px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  text-decoration: none; /* Rimuove la sottolineatura del link */
+  color: inherit; /* Eredita il colore del testo normale */
+  border: 1px solid transparent; /* Bordo iniziale invisibile */
+  transition: border-color 0.3s, background-color 0.3s; /* Transizione fluida */
+}
+
+.favorite-recipe-item:hover {
+  border-color: #da8e00; /* Il bordo diventa colorato al passaggio del mouse */
+  background-color: #fff;
+}
+
+.favorite-recipe-item:last-child {
+  margin-bottom: 0;
+}
+
+.favorite-recipe-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+  margin: 0 0 8px 0;
+}
+
+.favorite-recipe-description {
+  font-size: 0.95rem;
+  color: #666;
+  margin: 0;
+}
+
+
+.managed-recipe {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+
+.managed-recipe-info {
+  flex-grow: 1; /* Fa in modo che il link occupi tutto lo spazio disponibile */
+  text-decoration: none;
+  color: inherit;
+}
+
+.managed-recipe-actions {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0; /* Impedisce ai bottoni di rimpicciolirsi */
+}
+
+
+/* Singolo elemento della lista dei preferiti */
+.favorite-recipe-item {
+  display: block; /* Lo rende un blocco cliccabile intero */
+  background-color: #f8f9fa; /* Sfondo leggermente grigio */
+  padding: 20px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  text-decoration: none; /* Rimuove la sottolineatura del link */
+  color: inherit; /* Eredita il colore del testo normale */
+  border: 1px solid transparent; /* Bordo iniziale invisibile */
+  transition: border-color 0.3s, background-color 0.3s; /* Transizione fluida */
+}
+
+.favorite-recipe-item:hover {
+  border-color: #da8e00; /* Il bordo diventa colorato al passaggio del mouse */
+  background-color: #fff;
+}
+
+.favorite-recipe-item:last-child {
+  margin-bottom: 0;
+}
+
+.favorite-recipe-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+  margin: 0 0 8px 0;
+}
+
+.favorite-recipe-description {
+  font-size: 0.95rem;
+  color: #666;
+  margin: 0;
+}
+

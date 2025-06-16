@@ -1,0 +1,146 @@
+
+.navbar {
+  background-color: #da8e00;
+  padding: 0.5rem 2rem ;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.navbar-logo {
+  height: 100px;
+  cursor: pointer;
+}
+.title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 1.8rem;
+}
+
+.user-menu-container {
+  position: relative;
+  display: inline-block;
+}
+.user-menu-trigger {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Spazio tra icona e nome */
+  padding: 5px 8px; /* Un po' di spazio interno */
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+.user-menu-trigger:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+.user-menu-trigger .user-profile-pic {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-menu-trigger .username {
+  color: white;
+  font-weight: 600;
+  margin-top: 0; /* Rimuovi il vecchio margin-top */
+}
+
+
+
+/* 1. Icona Hamburger: nascosta di default */
+.mobile-menu-icon {
+  display: none; /* Nascosto su schermi grandi */
+  font-size: 1.8rem;
+  color: white;
+  cursor: pointer;
+  z-index: 1001; /* Deve stare sopra a tutto */
+}
+
+/* Media Query: si applica a schermi larghi 768px o meno */
+@media screen and (max-width: 768px) {
+  
+  /* 2. Mostra l'icona hamburger */
+  .mobile-menu-icon {
+    display: block; /* Mostra l'icona su schermi piccoli */
+  }
+
+  /* 3. Nascondi il titolo centrale per fare spazio */
+  .navbar .title {
+    display: none;
+  }
+  
+  /* 4. Stile dei bottoni quando il menu mobile è chiuso */
+  .nav-buttons {
+    /* Trasforma i bottoni in un menu a tendina verticale */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 20px; /* Più spazio tra gli elementi */
+    
+    /* Posizionamento fuori schermo */
+    position: absolute;
+    top: 0;
+    right: -100%; /* Parti completamente fuori dallo schermo a destra */
+    width: 250px; /* Larghezza del menu mobile */
+    height: 100vh; /* Altezza completa dello schermo */
+    
+    /* Stile */
+    background-color: #333; /* Sfondo scuro per il menu */
+    padding-top: 100px; /* Spazio in alto per non sovrapporsi al logo */
+    
+    /* Animazione */
+    transition: all 0.4s ease-in-out;
+
+    z-index: 1000;
+  }
+
+  /* 5. Stile dei bottoni quando il menu mobile è APERTO */
+  .nav-buttons.mobile-active {
+    right: 0; /* Fai scorrere il menu dentro lo schermo */
+    box-shadow: -5px 0 15px rgba(0,0,0,0.2);
+  }
+
+  /* Adatta i link dentro al menu mobile */
+  .nav-buttons .nav-link-button {
+    width: 80%;
+    text-align: center;
+    padding: 15px 0;
+    font-size: 1.2rem;
+  }
+  
+  /* Adatta il menu utente quando è nel menu mobile */
+  .nav-buttons .user-menu-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Il dropdown del profilo ora si apre verso il basso */
+  .dropdown-menu {
+    position: static; /* Rimuovi il posizionamento assoluto */
+    background-color: transparent;
+    box-shadow: none;
+    border-radius: 0;
+    width: 100%;
+    padding: 10px 0 0 0;
+    animation: none;
+    text-align: center;
+  }
+
+  .dropdown-link, .dropdown-item {
+    background-color: rgba(255,255,255,0.1);
+    color: white;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    text-align: center;
+  }
+
+  .dropdown-divider {
+    display: none;
+  }
+}

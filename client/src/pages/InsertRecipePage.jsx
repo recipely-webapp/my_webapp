@@ -1,23 +1,20 @@
-// 1. Rimuovi l'import di useNavigate
+// src/pages/InsertRecipePage.jsx
 import React, { useState } from 'react';
-// import { useNavigate } from 'react-router-dom'; // <-- RIMUOVI QUESTA RIGA
 import api from '../services/api';
-import '../App.css';
-import Button from '@mui/material/Button';
+import RecipeForm from '../components/RecipeForm'; // 1. Importa il nuovo componente
+import '../styles/pages-styles/Recipe-Form.css'; // Importa lo stile condiviso per i form
 
+function InsertRecipePage() {
+  // Stato per i dati del form, inizializzato vuoto
+  const [formData, setFormData] = useState({
+    titolo: '',
+    descrizione: '',
+    ingredienti: '',
+    procedimento: '',
+    tempoPreparazione: '',
+    image: '',
+  });
 
-function InsertRecipePage({ user }) {
-  // 2. Rimuovi la chiamata a useNavigate
-  // const navigate = useNavigate(); // <-- RIMUOVI QUESTA RIGA
-
-  // Stati per ogni campo del form
-  const [titolo, setTitolo] = useState('');
-  const [descrizione, setDescrizione] = useState('');
-  const [ingredienti, setIngredienti] = useState(''); // Stringa separata da virgole
-  const [procedimento, setProcedimento] = useState(''); // Stringa separata da "a capo"
-  const [tempoPreparazione, setTempoPreparazione] = useState('');
-  const [image, setImage] = useState(''); // URL dell'immagine
-  
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
@@ -26,10 +23,10 @@ function InsertRecipePage({ user }) {
     setError('');
     setSubmitting(true);
 
-    const ingredientiArray = ingredienti.split(',').map(item => item.trim()).filter(item => item);
-    const procedimentoArray = procedimento.split('\n').map(step => step.trim()).filter(step => step);
+    const ingredientiArray = formData.ingredienti.split(',').map(item => item.trim()).filter(Boolean);
+    const procedimentoArray = formData.procedimento.split('\n').map(step => step.trim()).filter(Boolean);
 
-    if (ingredientiArray.length === 0 || procedimentoArray.length === 0 || !titolo) {
+    if (ingredientiArray.length === 0 || procedimentoArray.length === 0 || !formData.titolo) {
       setError('Titolo, Ingredienti e Procedimento sono campi obbligatori.');
       setSubmitting(false);
       return;
@@ -37,90 +34,36 @@ function InsertRecipePage({ user }) {
 
     try {
       const recipeData = {
-        titolo,
-        descrizione,
+        ...formData,
         ingredienti: ingredientiArray,
         procedimento: procedimentoArray,
-        tempoPreparazione: Number(tempoPreparazione),
-        image,
+        tempoPreparazione: Number(formData.tempoPreparazione),
       };
 
       const response = await api.createRecipe(recipeData);
-      
-      // 3. Sostituisci navigate(...) con window.location.href
-      // Questo reindirizzerà l'utente alla pagina della nuova ricetta
-      // causando un ricaricamento completo.
       window.location.href = `/recipe/${response.data._id}`;
 
     } catch (err) {
       const errorMessage = err.response?.data?.error || 'Si è verificato un errore. Riprova.';
       setError(errorMessage);
-      console.error('Errore inserimento ricetta:', err);
     } finally {
-      // In caso di errore, il `finally` si assicura che il bottone torni cliccabile
       setSubmitting(false);
     }
   };
 
-  // Il resto del componente rimane invariato...
   return (
     <div className="form-container">
-      <form onSubmit={handleSubmit}>
-        <h2>Inserisci una Nuova Ricetta</h2>
-        
-        {error && <p className="error-message">{error}</p>}
+      {/* Mostra il messaggio di errore se presente */}
+      {error && <p className="error-message">{error}</p>}
 
-        {/* ... tutti gli input del form ... */}
-        <input
-          type="text"
-          placeholder="Titolo della Ricetta"
-          value={titolo}
-          onChange={(e) => setTitolo(e.target.value)}
-          required
-        />
-        <input
-          type="text"
-          placeholder="URL dell'Immagine (es. /images/pasta.jpg)"
-          value={image}
-          onChange={(e) => setImage(e.target.value)}
-        />
-        <textarea
-          placeholder="Breve descrizione della ricetta"
-          value={descrizione}
-          onChange={(e) => setDescrizione(e.target.value)}
-          rows="3"
-        />
-        <input
-          type="number"
-          placeholder="Tempo di preparazione (minuti)"
-          value={tempoPreparazione}
-          onChange={(e) => setTempoPreparazione(e.target.value)}
-          min="1"
-        />
-        <textarea
-          placeholder="Ingredienti (separati da una virgola, es. Farina, Uova, Latte)"
-          value={ingredienti}
-          onChange={(e) => setIngredienti(e.target.value)}
-          required
-          rows="4"
-        />
-        <textarea
-          placeholder="Procedimento (un passaggio per ogni riga)"
-          value={procedimento}
-          onChange={(e) => setProcedimento(e.target.value)}
-          required
-          rows="6"
-        />
-
-        <Button 
-          type="submit" 
-          variant="contained"  // 'variant' definisce lo stile. 'contained' è un bottone solido con sfondo.
-          fullWidth          // Occupa tutta la larghezza del contenitore (come il tuo CSS faceva prima)
-          sx={{ mt: 2, p: 1.5 }} // 'sx' è per stili rapidi. Qui aggiungiamo margine sopra (mt) e padding (p).
-        >
-          Inserisci ricetta
-        </Button>
-      </form>
+      {/* 2. Usa il componente RecipeForm */}
+      <RecipeForm
+        formData={formData}
+        setFormData={setFormData}
+        handleSubmit={handleSubmit}
+        submitting={submitting}
+        formType="create"
+      />
     </div>
   );
 }
