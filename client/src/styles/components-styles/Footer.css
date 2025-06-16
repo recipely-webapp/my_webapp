@@ -1,11 +1,27 @@
-.footer {
-  background-color: #f4f4f4;
+/* src/styles/components-styles/Footer.css */
+
+.page-footer {
+  background-color: #2c3e50;
+  color: #bdc3c7;
   text-align: center;
-  padding: 1rem;
-  font-size: 0.9rem;
-  color: #555;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  border-top: 1px solid #ddd;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+  padding: 15px 0;
+  border-top: 1px solid #4a5568; 
+  /* position: fixed; bottom: 0; width: 100%; */ /* Rimosso per evitare sovrapposizioni, da gestire a livello di layout App.jsx se necessario */
+}
+
+.page-footer p {
+  margin: 0; 
+}
+
+.page-footer a {
+  color: #3498db;
+  text-decoration: none;
+  font-weight: 600;
+  margin-left: 10px;
+}
+
+.page-footer a:hover {
+  text-decoration: underline;
 }
