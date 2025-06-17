@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import AuthForm from '../components/AuthForm'; // Importa il componente riutilizzabile
-import '../App.css'; // Importa lo stile centralizzato
 
 function LoginPage({ setCurrentUser }) {
   const navigate = useNavigate();
