@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../services/api'; // 1. Importa l'API
+import '../styles/pages-styles/ProfilePage.css'; // Importa il CSS
 
 // Aggiungiamo due icone per i bottoni
 import { FaTrash, FaEdit } from 'react-icons/fa';
