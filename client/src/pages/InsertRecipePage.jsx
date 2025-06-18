@@ -1,6 +1,7 @@
 // src/pages/InsertRecipePage.jsx
 import React, { useState } from 'react';
 import api from '../services/api';
+import { useNavigate } from 'react-router-dom';
 import RecipeForm from '../components/RecipeForm'; // 1. Importa il nuovo componente
 import '../styles/pages-styles/Recipe-Form.css'; // Importa lo stile condiviso per i form
 
@@ -14,6 +15,8 @@ function InsertRecipePage() {
     tempoPreparazione: '',
     image: '',
   });
+
+   const navigate = useNavigate(); // 2. INIZIALIZZA L'HOOK
 
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -41,7 +44,7 @@ function InsertRecipePage() {
       };
 
       const response = await api.createRecipe(recipeData);
-      window.location.href = `/recipe/${response.data._id}`;
+        navigate(`/recipe/${response.data._id}`);
 
     } catch (err) {
       const errorMessage = err.response?.data?.error || 'Si è verificato un errore. Riprova.';

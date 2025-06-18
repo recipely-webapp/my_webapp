@@ -1,6 +1,6 @@
 // src/pages/EditRecipePage.jsx
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import RecipeForm from '../components/RecipeForm'; // 1. Importa il nuovo componente
 import '../styles/pages-styles/Recipe-Form.css';
@@ -17,6 +17,8 @@ function EditRecipePage() {
     tempoPreparazione: '',
     image: '',
   });
+
+   const navigate = useNavigate(); // 2. INIZIALIZZA L'HOOK
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -70,7 +72,8 @@ function EditRecipePage() {
             tempoPreparazione: Number(formData.tempoPreparazione),
         };
       await api.updateRecipe(recipeId, recipeDataToUpdate);
-      window.location.href = `/recipe/${recipeId}`;
+            navigate(`/recipe/${recipeId}`);
+
     } catch (err) {
       const errorMessage = err.response?.data?.error || 'Si è verificato un errore. Riprova.';
       setError(errorMessage);

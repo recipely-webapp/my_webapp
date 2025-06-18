@@ -164,6 +164,6 @@ exports.logoutUser = async (req, res) => {
 
     } catch (error) {
         console.error("Errore logout:", error);
-        res.status(500).json({ message: "Errore del server durante il logout." });
+        res.status(500).json({ error: "Errore del server durante il logout." });
     }
 };
