@@ -64,7 +64,7 @@ function FavoritesPage({ user }) {
       {favorites.length === 0 ? (
         <p>Non hai ancora aggiunto nessuna ricetta ai tuoi preferiti.</p>
       ) : (
-        <div className="card-list" style={{  margin: 0 , maxWidth: 800}}>
+        <div className="card-list" >
           {favorites.map((r) => (
             <Link to={`/recipe/${r._id}`} key={r._id} style={{ textDecoration: 'none', color: 'inherit' }}>
               <Card
