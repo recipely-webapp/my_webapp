@@ -69,7 +69,7 @@ exports.loginUser = async (req, res) => {
         const { accessToken, refreshToken } = generateTokens(user._id);  // Se le credenziali sono valide, crea accessToken e refreshToken
 
         // Salva il refresh token nel database
-        console.log(`[LOGIN] Salvataggio refresh token nel DB: ${refreshToken} per utente ${user._id}`);
+        
         await RefreshToken.create({ token: refreshToken, userId: user._id });  // Salva il refresh token in una collezione RefreshToken, associandolo all'utente
 
         // Imposta il refresh token in un cookie HTTPOnly
