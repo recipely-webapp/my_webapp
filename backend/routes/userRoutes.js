@@ -1,11 +1,15 @@
-// server/routes/userRoutes.js
+
 const express = require('express');
 const router = express.Router();
+// Importa funzioni del controller (logica di business)
 const userController = require('../controllers/userController');
-const verifyToken = require('../middleware/verifyToken');
+// Middleware per autenticazione
+const {verifyToken} = require('../middleware/verifyToken');
+
 
 // Aggiunge o rimuove dai preferiti
 router.post('/favorites/:recipeId', verifyToken,  userController.toggleFavorite);
-router.get('/favorites', verifyToken, userController.getFavorites); // Questa è specifica e non ha conflitti con l'altra. L'ordine qui è OK.
+// Recupera la lista dei preferiti
+router.get('/favorites', verifyToken, userController.getFavorites); 
 
 module.exports = router;

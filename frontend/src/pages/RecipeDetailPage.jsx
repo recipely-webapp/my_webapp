@@ -1,34 +1,34 @@
-// client/src/pages/RecipeDetailPage.jsx
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom'; // 1. Importa useParams
+import { useParams } from 'react-router-dom'; 
 import api from '../services/api';
-import '../styles/pages-styles/RecipeDetailPage.css'; // Importa il CSS
+import '../styles/pages-styles/RecipeDetailPage.css'; 
 
+// Visualizza i dettagli della ricetta
 function RecipeDetailPage() {
   const [recipe, setRecipe] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-
-  // 2. useParams() ci dà accesso ai parametri dinamici dell'URL
-  const { recipeId } = useParams(); // Il nome 'recipeId' deve corrispondere a quello nella rotta in App.js
+  // Estrae parametri dall'URL
+  const { recipeId } = useParams(); 
 
   useEffect(() => {
+    // Recupera ricetta
     const fetchRecipe = async () => {
       try {
         setLoading(true);
-        // 3. Facciamo la chiamata API per ottenere i dati della singola ricetta
-        const res = await api.getRecipeById(recipeId); // Assicurati di avere questa funzione in api.js
+        const res = await api.getRecipeById(recipeId); 
         setRecipe(res.data);
-      } catch (err) {
+      } 
+      catch (err) {
         setError('Ricetta non trovata o errore nel caricamento.');
         console.error('Errore fetch ricetta:', err);
-      } finally {
+      } 
+      finally {
         setLoading(false);
       }
     };
-
     fetchRecipe();
-  }, [recipeId]); // L'effetto si riesegue se l'ID nell'URL cambia
+  }, [recipeId]); 
 
   if (loading) {
     return <p>Caricamento...</p>;
@@ -42,7 +42,6 @@ function RecipeDetailPage() {
     return <p>Ricetta non trovata.</p>;
   }
 
-  // 4. Mostriamo i dettagli della ricetta
   return (
     <div className="recipe-detail-container">
       <h1 className="recipe-detail-title">{recipe.titolo}</h1>
@@ -52,8 +51,10 @@ function RecipeDetailPage() {
 
       <div className="recipe-detail-content">
         <p className="recipe-detail-description">{recipe.descrizione}</p>
-<h3>Ingredienti:</h3>
+
+        <h3>Ingredienti:</h3>
         <ul>
+          {/* Mappa gli ingredienti assegnando l'indice */}
           {recipe.ingredienti.map((ing, index) => (
             <li key={index}>{ing}</li>
           ))}
@@ -61,6 +62,7 @@ function RecipeDetailPage() {
 
         <h3>Procedimento:</h3>
         <ol>
+          {/* Mappa il procedimento assegnando l'indice */}
           {recipe.procedimento.map((step, index) => (
             <li key={index}>{step}</li>
           ))}

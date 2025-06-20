@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'; // Importa Link per la navigazione
+import { Link } from 'react-router-dom'; 
 import api from '../services/api'; 
 import '../styles/components-styles/Recipe-Search.css';
 
+// Ricerca ricette
 function RecipeSearch() {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredRecipes, setFilteredRecipes] = useState([]);
@@ -11,8 +12,8 @@ function RecipeSearch() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
-    // ... (la logica di ricerca con debounce rimane identica)
     const searchRecipes = async () => {
+      // Se la barra di ricerca è vuota, resetta
       if (!searchTerm.trim()) {
         setFilteredRecipes([]);
         setIsDropdownOpen(false);
@@ -20,20 +21,27 @@ function RecipeSearch() {
       }
       setIsLoading(true);
       setError(null);
+
       try {
+        // Chiamata API per cercare ricette
         const response = await api.searchRecipes(searchTerm);
         setFilteredRecipes(response.data);
         setIsDropdownOpen(response.data.length > 0);
-      } catch (err) {
+      } 
+      catch (err) {
         setError('Errore nella ricerca delle ricette');
         console.error('Errore nella ricerca:', err);
         setFilteredRecipes([]);
-      } finally {
+      } 
+      finally {
+        // Nasconde indicatore di caricamento
         setIsLoading(false);
       }
     };
+    // Imposta un timer prima di effettuare una chiamata API
     const debounceTimer = setTimeout(() => searchRecipes(), 300);
     return () => clearTimeout(debounceTimer);
+    // Effetto eseguito ad ogni cambio
   }, [searchTerm]);
 
   return (
@@ -46,25 +54,26 @@ function RecipeSearch() {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="recipe-search-input"
+          // Se ci sono risultati, mostra il dropdown e si chiude dopo un timeout
           onFocus={() => filteredRecipes.length > 0 && setIsDropdownOpen(true)}
-          // Chiude la tendina quando l'utente clicca altrove
           onBlur={() => setTimeout(() => setIsDropdownOpen(false), 200)} 
         />
+
+        {/* Mostra dinamicamente caricamento o errore */}
         {isLoading && <div className="search-loading">Ricerca in corso...</div>}
         {error && <div className="search-error">{error}</div>}
       </div>
 
+      {/* Se dropdown è aperto, ogni ricetta è cliccabile */}
       {isDropdownOpen && (
         <div className="recipe-results-dropdown">
           <div className="dropdown-content">
+
+            {/* Mappa i risultati della ricerca in una lista di link */}
             {filteredRecipes.map(recipe => (
-              // ===== MODIFICA CHIAVE QUI =====
-              // Ogni elemento è un Link che porta alla pagina di dettaglio.
-              // L'URL corrisponde alla rotta definita in App.jsx.
               <Link 
                 key={recipe._id} 
                 to={`/recipe/${recipe._id}`} 
-                
                 className="recipe-result-item-link"
               >
                 <div className="recipe-result-item">
@@ -80,12 +89,12 @@ function RecipeSearch() {
                   </div>
                 </div>
               </Link>
-              // ===== FINE MODIFICA =====
             ))}
           </div>
         </div>
       )}
-
+      
+      {/* Messaggio per quando la ricerca non produce risultati */}
       {searchTerm && !isLoading && !error && filteredRecipes.length === 0 && (
         <div className="no-results-message">Nessuna ricetta trovata per "{searchTerm}"</div>
       )}

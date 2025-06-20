@@ -3,42 +3,40 @@ import { Link } from 'react-router-dom';
 import api from '../services/api';
 import Card from '../components/Card';
 
-// Riceve l'utente loggato come prop per sapere chi è
+// Mostra le ricette preferite dell'utente
 function FavoritesPage({ user }) {
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    // Funzione per caricare i dati
     const fetchFavorites = async () => {
-      // Se non c'è un utente, non fare nulla e mostra un messaggio
       if (!user) {
         setError('Devi effettuare il login per vedere i tuoi preferiti.');
         setLoading(false);
         return;
       }
-
       try {
         const res = await api.getFavorites();
-        setFavorites(res.data.favorites); // L'API restituisce un array di oggetti ricetta
+        setFavorites(res.data.favorites); 
         setError('');
-      } catch (err) {
+      } 
+      catch (err) {
         console.error('Errore nel caricamento dei preferiti:', err);
         setError('Non ci sono ricette nei preferiti');
-      } finally {
+      } 
+      finally {
         setLoading(false);
       }
     };
-
     fetchFavorites();
-  }, [user]); // Esegui l'effetto quando il componente si monta o quando l'utente cambia
+  }, [user]); 
 
-  // Funzione per rimuovere un preferito dalla visualizzazione in tempo reale
+  // Gestisce la rimozione di una ricetta dai preferiti
   const handleToggleFavorite = async (recipeId) => {
     try {
-      await api.toggleFavorite(recipeId); // Chiama l'API per rimuoverlo
-      // Aggiorna lo stato locale rimuovendo la ricetta senza dover ricaricare la pagina
+      await api.toggleFavorite(recipeId); 
+      // Crea un nuovo array eliminando l'elemento con ID=recipeId
       setFavorites(currentFavorites => 
         currentFavorites.filter(fav => fav._id !== recipeId)
       );
@@ -47,8 +45,6 @@ function FavoritesPage({ user }) {
       alert('Si è verificato un errore.');
     }
   };
-
-  // --- Logica di visualizzazione ---
 
   if (loading) {
     return <div className="container"><p>Caricamento dei preferiti...</p></div>;
@@ -71,10 +67,10 @@ function FavoritesPage({ user }) {
                 title={r.titolo}
                 image={r.image}
                 description={r.descrizione}
-                // Tutte le ricette in questa pagina sono preferite, quindi isFavorite è sempre true
                 isFavorite={true}
-                // La funzione per togliere il preferito
+                // Aggiunta ai preferiti dopo il click
                 onToggleFavorite={(e) => {
+                  // Previene il bubbling
                   e.stopPropagation();
                   e.preventDefault();
                   handleToggleFavorite(r._id);

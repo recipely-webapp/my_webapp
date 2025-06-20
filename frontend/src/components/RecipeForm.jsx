@@ -1,11 +1,9 @@
-// src/components/RecipeForm.jsx
 import React from 'react';
 import Button from '@mui/material/Button';
 
-// Riceve i dati del form (formData), il gestore delle modifiche (handleChange),
-// il gestore del submit (handleSubmit), e lo stato di caricamento (submitting).
 function RecipeForm({ formData, setFormData, handleSubmit, submitting, formType }) {
 
+   // Gestisce il cambiamento dei campi input
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -13,9 +11,9 @@ function RecipeForm({ formData, setFormData, handleSubmit, submitting, formType 
 
   return (
     <form onSubmit={handleSubmit}>
-      {/* Il titolo cambia in base al tipo di form */}
       <h2>{formType === 'create' ? 'Inserisci una Nuova Ricetta' : 'Modifica Ricetta'}</h2>
-
+      
+      {/* Campo titolo */}
       <input
         type="text"
         name="titolo"
@@ -24,6 +22,8 @@ function RecipeForm({ formData, setFormData, handleSubmit, submitting, formType 
         onChange={handleChange}
         required
       />
+
+      {/* Campo immagine */}
       <input
         type="text"
         name="image"
@@ -31,6 +31,8 @@ function RecipeForm({ formData, setFormData, handleSubmit, submitting, formType 
         value={formData.image}
         onChange={handleChange}
       />
+
+      {/* Campo descrizione */}
       <textarea
         name="descrizione"
         placeholder="Breve descrizione della ricetta"
@@ -38,6 +40,8 @@ function RecipeForm({ formData, setFormData, handleSubmit, submitting, formType 
         onChange={handleChange}
         rows="3"
       />
+
+      {/* Campo tempo preparazione */}
       <input
         type="number"
         name="tempoPreparazione"
@@ -46,6 +50,8 @@ function RecipeForm({ formData, setFormData, handleSubmit, submitting, formType 
         onChange={handleChange}
         min="1"
       />
+
+      {/* Campo ingredienti */}
       <textarea
         name="ingredienti"
         placeholder="Ingredienti (separati da una virgola)"
@@ -54,6 +60,8 @@ function RecipeForm({ formData, setFormData, handleSubmit, submitting, formType 
         required
         rows="4"
       />
+
+      {/* Campo procedimento */}
       <textarea
         name="procedimento"
         placeholder="Procedimento (un passaggio per ogni riga)"
@@ -63,16 +71,18 @@ function RecipeForm({ formData, setFormData, handleSubmit, submitting, formType 
         rows="6"
       />
 
+      {/* Pulsante submit */}
       <Button 
         type="submit" 
-        variant="contained"
+        variant="contained"      // Sfondo colorato
         fullWidth
-        disabled={submitting}
-        sx={{ mt: 2, p: 1.5 }}
+        disabled={submitting}    // Bottone disabilitato
+        sx={{ mt: 2, p: 1.5 }}   // Margin top, padding
       >
-        {submitting 
-            ? 'Salvataggio...' 
-            : (formType === 'create' ? 'Crea Ricetta' : 'Salva Modifiche')}
+
+        {/* Il testo del bottone cambia dinamicamente */}
+        {submitting ? 'Salvataggio...' 
+          : (formType === 'create' ? 'Crea Ricetta' : 'Salva Modifiche')}
       </Button>
     </form>
   );

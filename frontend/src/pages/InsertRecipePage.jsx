@@ -1,12 +1,9 @@
-// src/pages/InsertRecipePage.jsx
 import React, { useState } from 'react';
 import api from '../services/api';
 import { useNavigate } from 'react-router-dom';
-import RecipeForm from '../components/RecipeForm'; // 1. Importa il nuovo componente
-import '../styles/pages-styles/Recipe-Form.css'; // Importa lo stile condiviso per i form
+import RecipeForm from '../components/RecipeForm'; 
 
 function InsertRecipePage() {
-  // Stato per i dati del form, inizializzato vuoto
   const [formData, setFormData] = useState({
     titolo: '',
     descrizione: '',
@@ -15,41 +12,46 @@ function InsertRecipePage() {
     tempoPreparazione: '',
     image: '',
   });
-
-   const navigate = useNavigate(); // 2. INIZIALIZZA L'HOOK
-
+  const navigate = useNavigate(); 
   const [error, setError] = useState('');
+  // Gestisce stato di invio in corso
   const [submitting, setSubmitting] = useState(false);
 
+  // Gestisce il processo di invio del form
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setSubmitting(true);
 
+    // Divide gli ingredienti separati da virgola e rimuove spazi/elementi vuoti
     const ingredientiArray = formData.ingredienti.split(',').map(item => item.trim()).filter(Boolean);
+    // Divide il procedimento riga per riga e rimuove spazi/righe vuote
     const procedimentoArray = formData.procedimento.split('\n').map(step => step.trim()).filter(Boolean);
 
     if (ingredientiArray.length === 0 || procedimentoArray.length === 0 || !formData.titolo) {
       setError('Titolo, Ingredienti e Procedimento sono campi obbligatori.');
+      // Riabilita il bottone
       setSubmitting(false);
       return;
     }
 
     try {
-      const recipeData = {
-        ...formData,
+      const recipeData = { ...formData,
         ingredienti: ingredientiArray,
         procedimento: procedimentoArray,
         tempoPreparazione: Number(formData.tempoPreparazione),
       };
 
-      const response = await api.createRecipe(recipeData);
-        navigate(`/recipe/${response.data._id}`);
+      const res = await api.createRecipe(recipeData);
+      // Reindirizza alla pagina della nuova ricetta
+        navigate(`/recipe/${res.data._id}`);
 
-    } catch (err) {
-      const errorMessage = err.response?.data?.error || 'Si è verificato un errore. Riprova.';
+    } 
+    catch (err) {
+      const errorMessage = err.res?.data?.error || 'Si è verificato un errore. Riprova.';
       setError(errorMessage);
-    } finally {
+    } 
+    finally {
       setSubmitting(false);
     }
   };
@@ -59,7 +61,6 @@ function InsertRecipePage() {
       {/* Mostra il messaggio di errore se presente */}
       {error && <p className="error-message">{error}</p>}
 
-      {/* 2. Usa il componente RecipeForm */}
       <RecipeForm
         formData={formData}
         setFormData={setFormData}

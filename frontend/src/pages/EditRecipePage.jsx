@@ -1,14 +1,11 @@
-// src/pages/EditRecipePage.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../services/api';
-import RecipeForm from '../components/RecipeForm'; // 1. Importa il nuovo componente
-import '../styles/pages-styles/Recipe-Form.css';
+import RecipeForm from '../components/RecipeForm'; 
 
 function EditRecipePage() {
+  // Estrae parametri dall'URL
   const { recipeId } = useParams();
-
-  // Stato per i dati del form
   const [formData, setFormData] = useState({
     titolo: '',
     descrizione: '',
@@ -17,21 +14,20 @@ function EditRecipePage() {
     tempoPreparazione: '',
     image: '',
   });
-
-   const navigate = useNavigate(); // 2. INIZIALIZZA L'HOOK
-
+   const navigate = useNavigate(); 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  // Gestisce stato di invio in corso
   const [submitting, setSubmitting] = useState(false);
 
-  // useEffect per caricare i dati iniziali
   useEffect(() => {
+    // Recupera dati di una ricetta
     const fetchRecipeData = async () => {
       try {
         const response = await api.getRecipeById(recipeId);
         const { titolo, descrizione, ingredienti, procedimento, tempoPreparazione, image } = response.data;
         
-        // Imposta i dati nello stato del form, convertendo gli array in stringhe
+        // Inizializza dati da inserire nel form
         setFormData({
           titolo,
           descrizione,
@@ -40,39 +36,44 @@ function EditRecipePage() {
           tempoPreparazione: tempoPreparazione || '',
           image: image || '',
         });
-        
-      } catch (err) {
+      } 
+      catch (err) {
         setError('Impossibile caricare i dati della ricetta.');
-      } finally {
+      } 
+      finally {
         setLoading(false);
       }
     };
     fetchRecipeData();
   }, [recipeId]);
 
+  // Gestisce il processo di invio del form
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setSubmitting(true);
 
+    // Divide gli ingredienti separati da virgola e rimuove spazi/elementi vuoti
     const ingredientiArray = formData.ingredienti.split(',').map(item => item.trim()).filter(Boolean);
+    // Divide il procedimento riga per riga e rimuove spazi/righe vuote
     const procedimentoArray = formData.procedimento.split('\n').map(step => step.trim()).filter(Boolean);
 
     if (ingredientiArray.length === 0 || procedimentoArray.length === 0 || !formData.titolo) {
       setError('Titolo, Ingredienti e Procedimento sono campi obbligatori.');
+      // Riabilita il bottone
       setSubmitting(false);
       return;
     }
     
     try {
-        const recipeDataToUpdate = {
-            ...formData,
+        const recipeDataToUpdate = {...formData,
             ingredienti: ingredientiArray,
             procedimento: procedimentoArray,
             tempoPreparazione: Number(formData.tempoPreparazione),
         };
       await api.updateRecipe(recipeId, recipeDataToUpdate);
-            navigate(`/recipe/${recipeId}`);
+        // Reindirizza alla pagina della nuova ricetta
+        navigate(`/recipe/${recipeId}`);
 
     } catch (err) {
       const errorMessage = err.response?.data?.error || 'Si è verificato un errore. Riprova.';
@@ -86,9 +87,9 @@ function EditRecipePage() {
 
   return (
     <div className="form-container">
+      {/* Mostra il messaggio di errore se presente */}
       {error && <p className="error-message">{error}</p>}
       
-      {/* 2. Usa il componente RecipeForm */}
       <RecipeForm
         formData={formData}
         setFormData={setFormData}

@@ -105,7 +105,6 @@
   line-height: 1.4;
 }
 
-/* Scrollbar styling */
 .recipe-results-dropdown::-webkit-scrollbar {
   width: 8px;
 }
@@ -125,6 +124,6 @@
 }
 
 .recipe-result-item-link {
-  text-decoration: none; /* Rimuove la sottolineatura */
-  color: inherit;        /* Fa in modo che il testo del link abbia lo stesso colore del testo normale (solitamente nero o grigio scuro) */
+  text-decoration: none; 
+  color: inherit;        
 }

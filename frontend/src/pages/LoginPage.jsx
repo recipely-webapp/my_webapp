@@ -1,31 +1,33 @@
-// src/pages/LoginPage.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
-import AuthForm from '../components/AuthForm'; // Importa il componente riutilizzabile
+import AuthForm from '../components/AuthForm'; 
 
 function LoginPage({ setCurrentUser }) {
   const navigate = useNavigate();
   const [error, setError] = useState('');
+  // Gestisce stato di invio in corso
   const [submitting, setSubmitting] = useState(false);
 
+  // Gestisce il processo di login
   const handleLogin = async (formData) => {
     setError('');
     setSubmitting(true);
     try {
-      // Passiamo solo email e password, come richiesto dall'API
       const credentials = { email: formData.email, password: formData.password };
       const res = await api.login(credentials);
-      
       localStorage.setItem('accessToken', res.data.accessToken);
       localStorage.setItem('user', JSON.stringify(res.data.user));
       setCurrentUser(res.data.user);
+      // Reindirizza alla home dopo il login
       navigate('/');
-    } catch (err) {
+    } 
+    catch (err) {
       const errorMessage = err.response?.data?.message || 'Credenziali non valide. Riprova.';
       setError(errorMessage);
       console.error('Errore login:', errorMessage);
-    } finally {
+    } 
+    finally {
       setSubmitting(false);
     }
   };

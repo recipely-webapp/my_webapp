@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
+// Importa le funzioni del controller (logica di business)
 const authController = require('../controllers/authController');
 
 // Rotte per autenticazione

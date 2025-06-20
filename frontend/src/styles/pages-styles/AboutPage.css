@@ -51,18 +51,16 @@
 
 .project-section {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: wrap;/* manda a capo gli elementi che vanno in overflow*/
   align-items: center;
   gap: 40px;
 }
 
 .about-text-content {
-  flex: 1;
   min-width: 300px;
 }
 
 .about-image-content {
-  flex: 1;
   min-width: 300px;
   text-align: center;
 }
@@ -79,7 +77,6 @@
 }
 
 .tech-column {
-  flex: 1;
   min-width: 300px;
   background-color: #f8f9fa;
   padding: 25px;
@@ -111,7 +108,6 @@
 }
 
 .context-box {
-  flex: 1;
   min-width: 250px;
 }
 

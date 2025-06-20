@@ -4,7 +4,7 @@ const recipeSchema = new mongoose.Schema({
   titolo: {
     type: String,
     required: [true, 'Il titolo della ricetta è obbligatorio'],
-    trim: true,
+    trim: true,   // Pulisce gli spazi bianchi
     maxlength: [100, 'Il titolo non può superare i 100 caratteri']
   },
   descrizione: {
@@ -15,6 +15,7 @@ const recipeSchema = new mongoose.Schema({
   procedimento: {
     type: [String],
     required: [true, 'Il procedimento è obbligatorio'],
+     // Controllo per array non vuoti
     validate: {
       validator: function(steps) {
         return steps.length > 0;
@@ -41,6 +42,7 @@ const recipeSchema = new mongoose.Schema({
     trim: true,
     default: ''
   },
+    // Collega la ricetta all'autore User
    autore: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
@@ -52,8 +54,7 @@ const recipeSchema = new mongoose.Schema({
     default: Date.now
   }
 });
-
-// Aggiungi un indice per la ricerca full-text
+// Indice per la ricerca testuale tramite weights
 recipeSchema.index({ 
   titolo: 'text', 
   descrizione: 'text', 

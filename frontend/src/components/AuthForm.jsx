@@ -1,7 +1,7 @@
-// src/components/AuthForm.jsx
 import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 
+// Componente riutilizzabile per form di login/registrazione
 function AuthForm({ formType, onSubmit, error, submitting }) {
   const [formData, setFormData] = useState({
     username: '',
@@ -9,23 +9,28 @@ function AuthForm({ formType, onSubmit, error, submitting }) {
     password: '',
   });
 
+  // Gestisce il cambiamento dei campi input
   const handleChange = (e) => {
     const { name, value } = e.target;
+    // Aggiorna dinamicamente la chiave
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  // Gestisce invio del form
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData); // Passa tutti i dati del form al genitore
+    // Passa i dati al genitore
+    onSubmit(formData); 
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <h2>{formType === 'login' ? 'Login' : 'Registrazione'}</h2>
 
-      {/* Mostra il messaggio di errore se presente */}
+      {/* Mostra errore se presente */} 
       {error && <div className="error-message">{error}</div>}
 
+      {/* Mostra campo username solo per registrazione */}
       {formType === 'register' && (
         <input
           type="text"
@@ -37,6 +42,7 @@ function AuthForm({ formType, onSubmit, error, submitting }) {
         />
       )}
 
+      {/* Campo email */}
       <input
         type="email"
         name="email"
@@ -45,7 +51,8 @@ function AuthForm({ formType, onSubmit, error, submitting }) {
         onChange={handleChange}
         required
       />
-
+      
+      {/* Campo password */}
       <input
         type="password"
         name="password"
@@ -56,15 +63,17 @@ function AuthForm({ formType, onSubmit, error, submitting }) {
         minLength="6"
       />
 
+      {/* Pulsante submit */}
       <Button 
         type="submit" 
-        variant="contained"
+        variant="contained"      // Sfondo colorato
         fullWidth
-        disabled={submitting}
-        sx={{ mt: 2, p: 1.5 }}
+        disabled={submitting}    // Bottone disabilitato
+        sx={{ mt: 2, p: 1.5 }}   // Margin top, padding
       >
-        {submitting 
-          ? 'Caricamento...' 
+
+        {/* Il testo del bottone cambia dinamicamente */}
+        {submitting ? 'Caricamento...' 
           : (formType === 'login' ? 'Accedi' : 'Registrati')}
       </Button>
     </form>
