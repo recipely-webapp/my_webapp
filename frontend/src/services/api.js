@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // Creazione di un'istanza di Axios con URL base
 const API = axios.create({
-  //baseURL: 'http://localhost:5000/api', 
+  //baseURL: 'http://localhost:5000/api',  // da usare se vuoi utilizzare il localhost per test
   baseURL:'https://recipely-webapp.onrender.com/api',
   withCredentials: true,
 });

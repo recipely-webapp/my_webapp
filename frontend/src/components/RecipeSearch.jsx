@@ -89,6 +89,7 @@ function RecipeSearch() {
                   </div>
                 </div>
               </Link>
+              
             ))}
           </div>
         </div>
